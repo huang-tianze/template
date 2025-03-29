@@ -1,5 +1,5 @@
 % #region
-\documentclass[openany,a4paper]{article}
+\documentclass[openany,a4paper]{book}
 % 语言支持
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -15,8 +15,8 @@
 \usepackage{tocloft}
 
 % 代码高亮（minted 需要 Python 和 Pygments）
-\usepackage[draft]{minted}
-\setminted{breaklines,linenos,breaksymbolleft={}}
+\usepackage{minted}
+\setminted{breaklines,linenos}
 \setminted{frame=lines}
 \setminted{tabsize=4}
 \setminted{encoding=utf8}
@@ -33,65 +33,68 @@
 \usepackage{amsmath,amsthm,amssymb,graphicx}
 \usepackage[bookmarks=true,colorlinks,citecolor=blue,linkcolor=black]{hyperref}
 
-% \pagestyle{fancy}
-% \fancyhf{}
-% \fancyhead[L]{\leftmark}
-% \fancyhead[R]{\thepage}
 % #endregion
-
+\title{XCPC算法板子}
+\author{Sleeping Thinkers: Tokur233, huang\_tz, sword-a}
+\date{\today}
 \begin{document}
+\maketitle
+
 \tableofcontents
 
-\section{bits}
+\chapter{bits}
 
-\subsection{反转二进制}
-\inputminted{cpp}{model/bits/bits.h}
+\section{反转二进制}
+\inputminted{cpp}{Bits/bits.h}
 
-\section{数据结构}
+\chapter{数据结构}
 
-\subsection{trie树}
-\inputminted{cpp}{model/dataStruct/trie.h}
+\section{trie树}
+\inputminted{cpp}{DataStructure/trie.h}
 
-\subsection{线段树}
-\inputminted{cpp}{model/dataStruct/segmentTree.h}
+\section{线段树}
+\inputminted{cpp}{DataStructure/segmentTree.h}
 
-\section{字符串}
+\chapter{字符串}
 
-\subsection{字符串Hash}
-\inputminted{cpp}{model/string/hash.h}
+\section{字符串Hash}
+\inputminted{cpp}{String/hash.h}
 
-\subsection{KMP}
-\inputminted{cpp}{model/string/kmp.h}
+\section{KMP}
+\inputminted{cpp}{String/kmp.h}
 
-\section{Algorithm}
+\chapter{Algorithm}
 
-\subsection{STL内置算法}
-\inputminted{cpp}{model/algorithm/STL.h}
+\section{STL内置算法}
+\inputminted{cpp}{Algorithm/STL.h}
 
-\subsection{背包DP}
-\inputminted{cpp}{model/algorithm/dp.h}
+\section{背包DP}
+\inputminted{cpp}{Algorithm/dp.h}
 
-\section{数论}
+\chapter{数论}
 
-\subsection{模p下求幂/乘法逆元}
-\inputminted{cpp}{model/NumberTheory/modPow.h}
+\section{模p下求幂/乘法逆元}
+\inputminted{cpp}{NumberTheory/modPow.h}
 
-\subsection{线性筛}
-\inputminted{cpp}{model/NumberTheory/linearSieve.h}
+\section{线性筛}
+\inputminted{cpp}{NumberTheory/linearSieve.h}
 
-\subsection{GCD}
-\inputminted{cpp}{model/NumberTheory/exgcd.h}
+\section{exGCD}
+\inputminted{cpp}{NumberTheory/exgcd.h}
 
-\subsection{中国剩余定理}
-\inputminted{cpp}{model/NumberTheory/CRT.h}
+\section{中国剩余定理}
+\inputminted{cpp}{NumberTheory/CRT.h}
 
-\section{杂项(misc)}
+\chapter{杂项(Misc)}
 
-\subsection{FAST\_IO}
-\inputminted{cpp}{model/misc/fast_io.h}
+\section{FAST\_IO}
+\inputminted{cpp}{Misc/fast_io.h}
 
-\subsection{高精度大整数}
-\inputminted{cpp}{model/misc/BigInt.h}
+\section{高精度大整数}
+\inputminted{cpp}{Misc/BigInt.h}
+
+\section{遍历全排列}
+\inputminted{cpp}{Misc/next_permutation.h}
 
 
 \end{document}
