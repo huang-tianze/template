@@ -1,14 +1,97 @@
-\documentclass[12pt,a4paper,oneside]{article}
-
+% #region
+\documentclass[openany,a4paper]{article}
+% 语言支持
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{xeCJK}
 \usepackage{ctex}
+
+% 版面设置
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+% 代码高亮（minted 需要 Python 和 Pygments）
+\usepackage[draft]{minted}
+\setminted{breaklines,linenos,breaksymbolleft={}}
+\setminted{frame=lines}
+\setminted{tabsize=4}
+\setminted{encoding=utf8}
+\usemintedstyle{colorful}
+
+% 图表支持
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{a4} %a4大小
+\usepackage{lmodern} %提供部分字体
+
 \usepackage{amsmath,amsthm,amssymb,graphicx}
 \usepackage[bookmarks=true,colorlinks,citecolor=blue,linkcolor=black]{hyperref}
 
-
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[L]{\leftmark}
+% \fancyhead[R]{\thepage}
+% #endregion
 
 \begin{document}
-$ del $
+\tableofcontents
 
+\section{bits}
+
+\subsection{反转二进制}
+\inputminted{cpp}{model/bits/bits.h}
+
+\section{数据结构}
+
+\subsection{trie树}
+\inputminted{cpp}{model/dataStruct/trie.h}
+
+\subsection{线段树}
+\inputminted{cpp}{model/dataStruct/segmentTree.h}
+
+\section{字符串}
+
+\subsection{字符串Hash}
+\inputminted{cpp}{model/string/hash.h}
+
+\subsection{KMP}
+\inputminted{cpp}{model/string/kmp.h}
+
+\section{Algorithm}
+
+\subsection{STL内置算法}
+\inputminted{cpp}{model/algorithm/STL.h}
+
+\subsection{背包DP}
+\inputminted{cpp}{model/algorithm/dp.h}
+
+\section{数论}
+
+\subsection{模p下求幂/乘法逆元}
+\inputminted{cpp}{model/NumberTheory/modPow.h}
+
+\subsection{线性筛}
+\inputminted{cpp}{model/NumberTheory/linearSieve.h}
+
+\subsection{GCD}
+\inputminted{cpp}{model/NumberTheory/exgcd.h}
+
+\subsection{中国剩余定理}
+\inputminted{cpp}{model/NumberTheory/CRT.h}
+
+\section{杂项(misc)}
+
+\subsection{FAST\_IO}
+\inputminted{cpp}{model/misc/fast_io.h}
+
+\subsection{高精度大整数}
+\inputminted{cpp}{model/misc/BigInt.h}
 
 
 \end{document}

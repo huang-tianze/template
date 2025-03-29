@@ -14,7 +14,10 @@
 // NOLINTBEGIN
 #include <algorithm>
 #include <bits/stdc++.h>
+#include <cstdio>
 #include <numeric>
+#include <sstream>
+#include <string>
 using namespace std;
 
 signed main() {
@@ -36,6 +39,13 @@ signed main() {
     // <numeric>
     // 返回累加值
     auto i = accumulate(a.begin(), a.end(), 0);
+
+    // <sstream>
+    string str;                       // 源字符串
+    istringstream stringistream(str); // 临时流
+    string output;                    // 输出
+    char delim;                       // 分隔符
+    std::getline(stringistream, output, delim);
 }
 
 // NOLINTEND

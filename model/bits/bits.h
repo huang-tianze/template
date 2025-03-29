@@ -1,5 +1,3 @@
-// NOLINTBEGIN
-
 // 反转二进制
 int reversebit(int n) {
     n = ((n & 0xaaaaaaaa) >> 1) | ((n & 0x55555555) << 1);
@@ -9,4 +7,4 @@ int reversebit(int n) {
     return n;
 }
 
-// NOLINTEND
+// 位图
