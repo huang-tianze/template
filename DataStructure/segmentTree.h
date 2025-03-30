@@ -1,57 +1,79 @@
-// 线段树
-const int MAX_N = 1e5;
-int tree[MAX_N * 4];
-int lazy[MAX_N * 4];
-int a[MAX_N];
+#include <cstdio>
+#include <iostream>
+using namespace std;
 
-// 建树
-void build(int p, int l, int r) {
+#define int long long
+
+#define MAX_LEN 10005
+// a为初始数组，下标从1开始，存储原始数据; d维护区间和; flag为lazyTag
+int a[MAX_LEN], d[MAX_LEN * 4], flag[MAX_LEN * 4]; // *2 改成*4了
+
+void build(int l, int r, int p) {
     if (l == r) {
-        tree[p] = a[l];
+        d[p] = a[l];
         return;
     }
-    int m = (l + r) / 2;
-    build(2 * p + 1, l, m);
-    build(2 * p + 2, m + 1, r);
-    tree[p] = tree[2 * p + 1] + tree[2 * p + 2];
+    int mid = (l + r) >> 1;
+    build(l, mid, p * 2), build(mid + 1, r, p * 2 + 1);
+    d[p] = d[p * 2] + d[p * 2 + 1];
 }
 
-// 区间更新
-void push_down(int p, int l, int r) {
-    if (lazy[p] != 0) {
-        int m = (l + r) / 2;
-        tree[2 * p + 1] += (m - l + 1) * lazy[p];
-        tree[2 * p + 2] += (r - m) * lazy[p];
-        lazy[2 * p + 1] += lazy[p];
-        lazy[2 * p + 2] += lazy[p];
-        lazy[p] = 0;
+int getsum(int left, int right, int start, int end, int par) {
+    if (left <= start && end <= right) {
+        return d[par];
     }
+    int mid = (start + end) >> 1;
+    if (flag[par]) {
+        d[par * 2] += flag[par] * (mid - start + 1);
+        d[par * 2 + 1] += flag[par] * (end - mid);
+        flag[par * 2] += flag[par];
+        flag[par * 2 + 1] += flag[par];
+        flag[par] = 0;
+    }
+    int sum = 0;
+    if (left <= mid) sum += getsum(left, right, start, mid, par * 2);
+    if (right > mid) sum += getsum(left, right, mid + 1, end, par * 2 + 1);
+    return sum;
 }
 
-void update(int p, int l, int r, int ul, int ur, int val) {
-    if (ur < l || r < ul)
+void add(int left, int right, int value, int start, int end, int par) {
+    if (left <= start && end <= right) {
+        d[par] += value * (end - start + 1);
+        flag[par] += value;
         return;
-    if (ul <= l && r <= ur) {
-        tree[p] += (r - l + 1) * val;
-        if (l != r) { // 非叶子节点存储懒标记
-            lazy[p] += val;
-            return;
+    }
+    int mid = (start + end) >> 1;
+    if (flag[par] && start != end) {
+        d[par * 2] += flag[par] * (mid - start + 1);
+        d[par * 2 + 1] += flag[par] * (end - mid);
+        flag[par * 2] += flag[par];
+        flag[par * 2 + 1] += flag[par];
+        flag[par] = 0;
+    }
+    if (left <= mid) add(left, right, value, start, mid, par * 2);
+    if (right > mid) add(left, right, value, mid + 1, end, par * 2 + 1);
+    d[par] = d[par * 2] + d[par * 2 + 1];
+}
+
+signed main() {
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; ++i) {
+        cin >> a[i];
+    }
+    build(1, n, 1);
+    while (m--) {
+        int type;
+        scanf("%lld", &type);
+        if (type == 1) {
+            int x, y, k;
+            cin >> x >> y >> k;
+            add(x, y, k, 1, n, 1);
+        } else {
+            int x, y;
+            cin >> x >> y;
+            cout << getsum(x, y, 1, n, 1) << endl;
+            ;
         }
-        push_down(p, l, r);
-        int m = (l + r) / 2;
-        update(2 * p + 1, l, m, ul, ur, val);
-        update(2 * p + 2, m + 1, r, ul, ur, val);
-        tree[p] = tree[2 * p + 1] + tree[2 * p + 2];
     }
-}
-
-// 查询
-int query(int p, int l, int r, int ql, int qr) {
-    if (qr < l || r < ql)
-        return 0;
-    if (ql <= l && r <= qr)
-        return tree[p];
-    push_down(p, l, r); // 处理懒标记
-    int m = (l + r) / 2;
-    return query(2 * p + 1, l, m, ql, qr) + query(2 * p + 2, m + 1, r, ql, qr);
 }

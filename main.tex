@@ -1,7 +1,7 @@
 % #region
 \documentclass[openany,a4paper]{book}
 % 语言支持
-\usepackage[utf8]{inputenc}
+% \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{xeCJK}
@@ -17,6 +17,7 @@
 % 代码高亮（minted 需要 Python 和 Pygments）
 \usepackage{minted}
 \setminted{breaklines,linenos}
+\renewcommand{\theFancyVerbLine}{\textbf{\small\arabic{FancyVerbLine}}}
 \setminted{frame=lines}
 \setminted{tabsize=4}
 \setminted{encoding=utf8}
@@ -34,7 +35,7 @@
 \usepackage[bookmarks=true,colorlinks,citecolor=blue,linkcolor=black]{hyperref}
 
 % #endregion
-\title{XCPC算法板子}
+\title{\Huge XCPC算法板子}
 \author{Sleeping Thinkers: Tokur233, huang\_tz, sword-a}
 \date{\today}
 \begin{document}
@@ -42,20 +43,29 @@
 
 \tableofcontents
 
-\chapter{bits}
+\chapter{Bits}
 
 \section{反转二进制}
 \inputminted{cpp}{Bits/bits.h}
 
-\chapter{数据结构}
+\chapter{数据结构 (Data Structure)}
+
+\section{稀疏表(ST)}
+\inputminted{cpp}{DataStructure/ST.h}
 
 \section{trie树}
 \inputminted{cpp}{DataStructure/trie.h}
 
-\section{线段树}
-\inputminted{cpp}{DataStructure/segmentTree.h}
+\section{树状数组}
+\inputminted{cpp}{DataStructure/binaryIndexedTree.h}
 
-\chapter{字符串}
+\section{线段树}
+需要注意，下标从\verb|1|开始; 在外部使用时，\verb|\build(1,n,1)|建树、\verb|getsum(x,y,1,n,1)|查询、\verb|add(x,y,k,1,n,1)|修改。其中\verb|n|为数组长度，\verb|x, y|表示区间$[x,y]$, \verb|k|表示操作数。在外部当黑盒使用的话，参数\verb|1,n,1|是固定不变的，可以自行加一下缩略的重载。
+\inputminted{cpp}{DataStructure/segmentTree.h}
+\section{并查集}
+\inputminted{cpp}{DataStructure/disjointSet.h}
+
+\chapter{字符串 (String)}
 
 \section{字符串Hash}
 \inputminted{cpp}{String/hash.h}
@@ -63,7 +73,7 @@
 \section{KMP}
 \inputminted{cpp}{String/kmp.h}
 
-\chapter{Algorithm}
+\chapter{算法 (Algorithm)}
 
 \section{STL内置算法}
 \inputminted{cpp}{Algorithm/STL.h}
@@ -71,10 +81,14 @@
 \section{背包DP}
 \inputminted{cpp}{Algorithm/dp.h}
 
-\chapter{数论}
+\chapter{数论 (Number Theory)}
 
 \section{模p下求幂/乘法逆元}
 \inputminted{cpp}{NumberTheory/modPow.h}
+
+\section{欧拉函数}
+% TODO:还得加点东西
+\inputminted{cpp}{NumberTheory/EulerFunction.h}
 
 \section{线性筛}
 \inputminted{cpp}{NumberTheory/linearSieve.h}
@@ -85,15 +99,45 @@
 \section{中国剩余定理}
 \inputminted{cpp}{NumberTheory/CRT.h}
 
-\chapter{杂项(Misc)}
+\chapter{图论 (Graph Theory)}
+\section{最近公共祖先 (LCA)}
+这里有朴素算法和倍增算法两种，\verb|n|为节点数，\verb|root|为根节点值，使用邻接表。倍增的预处理使用\verb|preprocess(root,n)|.
+\par 朴素算法$O(n)$
+\inputminted{cpp}{GraphTheory/LCA-1.h}
+倍增算法，预处理$O(n\log n)$，查询$O(\log n)$
+\inputminted{cpp}{GraphTheory/LCA-2.h}
+
+
+\section{Dijkstra}
+用于求解有向\textbf{无负边权}图的单源最短路。即起点\verb|s|到所有点的最短路。其中\verb|vis[i]|表示是否遍历到节点\verb|i|，也即是否存在\verb|s|到\verb|i|的路径; \verb|dis[i]|为求解出的最短距离。坏的情况，时间复杂度为$O(n^2)$
+\par 对于有负边权的情况需要使用 Bellman-Ford 或 SPFA 。
+\inputminted{cpp}{GraphTheory/Dijkstra.h}
+
+\section{A*}
+增加了启发式函数\verb|heuristic(a,b)|。恒为0时退化为Dijkstra，小于等于实际最短路时能保证找到路径最短。
+\inputminted{cpp}{GraphTheory/Astar.h}
+
+\section{拓扑排序}
+用于处理节点有前置要求的任务，也可以用来判是否有环。也即，有向无环图(DAG)才有拓扑排序。
+\inputminted{cpp}{GraphTheory/TopoSort.h}
+
+\section{SPFA}
+Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
+\inputminted{cpp}{GraphTheory/SPFA.h}
+
+\chapter{杂项 (Misc)}
 
 \section{FAST\_IO}
 \inputminted{cpp}{Misc/fast_io.h}
+
+\section{离散化}
+\inputminted{cpp}{Misc/Discretize.h}
 
 \section{高精度大整数}
 \inputminted{cpp}{Misc/BigInt.h}
 
 \section{遍历全排列}
+需要注意的是，使用对\verb|vector<int>|或\verb|std::string|使用\verb|next_permutation()|，是从当前字典序一直遍历到字典序最大的排列。因此，如果要保证所有排列都被遍历到，需要确保最开始的数据需要是最小的字典序。反之，如果写成了字典序最大的，则在一次执行后变成\verb|while(0)|
 \inputminted{cpp}{Misc/next_permutation.h}
 
 

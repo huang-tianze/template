@@ -1,20 +1,18 @@
 ## STL 函数
 
-[stlFn](./stlFn/algorithm.md)
 
 ## 字符串
 
 ### kmp
 
-[kmp](./string/kmp.cpp)
+
 
 ### 多项式 hash、子串 hash
 
-[stringHash]()
 
 ### 二进制:
 
-[bit](./bits/bits.h)
+
 
 ## 数据结构
 
@@ -31,15 +29,8 @@ TODO: nedd to update
 
 ### trie(定长数组版)
 
-[trie](./dataStruct/trie.h)
 
 ### next_permutation (algorithm)
-TODO: mv to stlFn
-```cpp
-    string combination = "0000000000";  //如果要遍历，需要弄成字典序最小的那个，如果是字典序最大的话，会直接导致while(0)
-    do {
-        // bruh
-    } while (next_permutation(combination.begin(), combination.end()));
 
 ```
 
@@ -48,85 +39,7 @@ TODO: mv to stlFn
 ### 线段树
 
 ```cpp
-#include <cstdio>
-#include <iostream>
-using namespace std;
 
-#define int long long
-
-#define MAX_LEN 10005
-
-int a[MAX_LEN],d[MAX_LEN*2],flag[MAX_LEN*2];
-
-void build(int l, int r, int p){
-    if (l == r) {
-        d[p] = a[l];
-        return;
-    }
-    int mid = (l+r)>>1;
-    build(l, mid, p*2),build(mid+1, r, p*2+1);
-    d[p] = d[p*2] + d[p*2+1];
-}
-
-int getsum(int left, int right, int start, int end, int par){
-    if(left <= start && end <= right){
-        return d[par];
-    }
-    int mid = (start + end)>>1;
-    if(flag[par]){
-        d[par*2] += flag[par]*(mid - start + 1);
-        d[par*2+1] += flag[par]*(end - mid);
-        flag[par*2] += flag[par];
-        flag[par*2+1] += flag[par];
-        flag[par] = 0;
-    }
-    int sum = 0;
-    if(left <= mid) sum+=getsum(left, right, start, mid, par*2);
-    if(right > mid) sum+=getsum(left, right, mid+1, end, par*2+1);
-    return sum;
-}
-
-void add(int left, int right, int value, int start, int end, int par){
-    if (left <= start && end <= right) {
-        d[par] += value*(end - start + 1);
-        flag[par] += value;
-        return;
-    }
-    int mid = (start + end) >>1;
-    if(flag[par] && start!=end){
-        d[par*2] += flag[par]*(mid - start + 1);
-        d[par*2+1] += flag[par]*(end - mid);
-        flag[par*2] += flag[par];
-        flag[par*2+1] += flag[par];
-        flag[par] = 0;
-    }
-    if(left <= mid) add(left, right, value, start, mid, par*2);
-    if(right > mid) add(left, right, value, mid+1, end, par*2+1);
-    d[par] = d[par*2] + d[par*2+1];
-}
-
-signed main(){
-    int n,m;
-    cin >> n >> m;
-    for (int i=1; i<=n; ++i) {
-        cin >> a[i];
-    }
-    build(1,n,1);
-    while(m--){
-        int type;
-        scanf("%lld",&type);
-        if (type == 1) {
-            int x,y,k;
-            cin >> x >> y >> k;
-            add(x, y, k, 1,n,1);
-        }
-        else{
-            int x,y;
-            cin >> x >> y;
-            cout << getsum(x, y,1,n,1) << endl;;
-        }
-    }
-}
 ```
 
 ---
@@ -160,85 +73,6 @@ signed main(){
 // }
 
 // // 区间修改与懒惰标记
-
-
-#include <cstdio>
-#include <iostream>
-using namespace std;
-
-#define int long long
-
-#define MAX_LEN 10005
-
-int a[MAX_LEN],d[MAX_LEN*2],flag[MAX_LEN*2];
-
-void build(int l, int r, int p){
-    if (l == r) {
-        d[p] = a[l];
-    }
-    int mid = (l+r)>>1;
-    build(l, mid, p*2),build(mid+1, r, p*2+1);
-    d[p] = d[p*2] + d[p*2+1];
-}
-
-int getsum(int left, int right, int start, int end, int par){
-    if(left <= start && end <= right){
-        return d[par];
-    }
-    int mid = (start + end)>>1;
-    if(flag[par]){
-        d[par*2] += flag[par]*(mid - start + 1);
-        d[par*2+1] += flag[par]*(end - mid);
-        flag[par*2] += flag[par];
-        flag[par*2+1] += flag[par];
-        flag[par] = 0;
-    }
-    int sum = 0;
-    if(left <= mid) getsum(left, right, start, mid, par*2);
-    if(right > mid) getsum(left, right, mid+1, end, par*2+1);
-    return sum;
-}
-
-void add(int left, int right, int value, int start, int end, int par){
-    if (left <= start && end <= right) {
-        d[par] += value*(end - start + 1);
-        flag[par] += value;
-    }
-    int mid = (start + end) >>1;
-    if(flag[par] && start!=end){
-        d[par*2] += flag[par]*(mid - start + 1);
-        d[par*2+1] += flag[par]*(end - mid);
-        flag[par*2] += flag[par];
-        flag[par*2+1] += flag[par];
-        flag[par] = 0;
-    }
-    if(left <= mid) add(left, right, value, start, mid, par*2);
-    if(right > mid) add(left, right, value, mid+1, end, par*2+1);
-    d[par] = d[par*2] + d[par*2+1];
-}
-
-signed main(){
-    int n,m;
-    cin >> n >> m;
-    for (int i=1; i<=n; ++i) {
-        cin >> a[i];
-    }
-    build(1,n,1);
-    while(m--){
-        int type;
-        scanf("%lld",&type);
-        if (type == 1) {
-            int x,y,k;
-            cin >> x >> y >> k;
-            add(x, y, k, 1,n,1);
-        }
-        else{
-            int x,y;
-            cin >> x >> y;
-            getsum(x, y,1,n,1);
-        }
-    }
-}
 ```
 
 ## 动态规划
@@ -246,17 +80,7 @@ signed main(){
 1. 背包
 
 ```cpp
-// bag.size = size
-// item : vector<int>
-// item.weight ::= vector<int> item
 
-vector<vector<int>> dp[item.size()][bag.size()];
-
-for(int i = 0; i <= item.size(),++i){
-    for(int j= 0;j<=bag.size();++j){
-
-    }
-}
 
 ```
 
@@ -390,205 +214,33 @@ vector<int> spfa(int s) {
 ### spaf 判负环：
 
 ```cpp
-bool SPFA(int acioi)
-{
-	queue<int>q;
-	for(register int i = 1;i <= n;++ i)
-		d[i] = 99999999;
-	d[acioi] = 0;
-	q.push(acioi);
-	while(!q.empty())
-	{
-		int x = q.front();
-		q.pop();use[x] = false;
-		for(register int i = head[x];i != 0;i = a[i].ne)
-		{
-			int y = a[i].y;
-			if(d[y] > d[x] + a[i].z)
-			{
-				d[y] = d[x] + a[i].z;
-				cnt[y] = cnt[x] + 1;
-				if(cnt[y] > n)
-					return false;
-				if(use[y] == false)
-				{
-					use[y] = true;
-					q.push(y);
-				}
-			}
-		}
-	}
-	return true;
-}
+
 ```
 
 ### Dijstra 最短路
 
 ```cpp
-struct edge {
-  int v, w;
-};
 
-vector<edge> e[MAXN];
-int dis[MAXN], vis[MAXN];
-
-void dijkstra(int n, int s) {
-  memset(dis, 0x3f, (n + 1) * sizeof(int));
-  dis[s] = 0;
-  for (int i = 1; i <= n; i++) {
-    int u = 0, mind = 0x3f3f3f3f;
-    for (int j = 1; j <= n; j++)
-      if (!vis[j] && dis[j] < mind) u = j, mind = dis[j];
-    vis[u] = true;
-    for (auto ed : e[u]) {
-      int v = ed.v, w = ed.w;
-      if (dis[v] > dis[u] + w) dis[v] = dis[u] + w;
-    }
-  }
-}
 ```
 
 ### A\*
 
 ```cpp
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <unordered_map>
-#include <cmath>
 
-using namespace std;
-using Point = int; // 节点编号
-
-struct Edge { int to; double cost; };
-using Graph = unordered_map<Point, vector<Edge>>;
-
-struct Node {
-    Point id;
-    double g, h;
-    Node* parent;
-    Node(Point _id, double _g, double _h, Node* _parent = nullptr)
-        : id(_id), g(_g), h(_h), parent(_parent) {}
-    double f() const { return g + h; }
-    bool operator>(const Node& other) const { return f() > other.f(); }
-};
-
-double heuristic(Point a, Point b) { return abs(a - b); } // 启发式函数（可修改）
-
-vector<Point> a_star(const Graph& graph, Point start, Point goal) {
-    priority_queue<Node, vector<Node>, greater<Node>> open_set;
-    unordered_map<Point, double> g_score;
-    unordered_map<Point, Node*> all_nodes;
-
-    open_set.emplace(start, 0, heuristic(start, goal));
-    g_score[start] = 0;
-    all_nodes[start] = new Node(start, 0, heuristic(start, goal));
-
-    while (!open_set.empty()) {
-        Node* current = new Node(open_set.top()); open_set.pop();
-        if (current->id == goal) { // 找到目标，回溯路径
-            vector<Point> path;
-            while (current) { path.push_back(current->id); current = current->parent; }
-            reverse(path.begin(), path.end());
-            return path;
-        }
-
-        for (const auto& edge : graph.at(current->id)) { // 遍历邻接表
-            double tentative_g = g_score[current->id] + edge.cost;
-            if (!g_score.count(edge.to) || tentative_g < g_score[edge.to]) {
-                g_score[edge.to] = tentative_g;
-                Node* new_node = new Node(edge.to, tentative_g, heuristic(edge.to, goal), current);
-                open_set.push(*new_node);
-                all_nodes[edge.to] = new_node;
-            }
-        }
-    }
-    return {};
-}
-
-int main() {
-    Graph graph = {
-        {0, {{1, 1}, {2, 4}}},
-        {1, {{2, 2}, {3, 5}}},
-        {2, {{3, 1}}},
-        {3, {}}
-    };
-    vector<Point> path = a_star(graph, 0, 3);
-    for (Point p : path) cout << p << " -> ";
-    cout << "Goal\n";
-    return 0;
-}
 
 ```
 
 ### 拓扑排序
 
 ```cpp
-int n, m;
-vector<int> G[MAXN];
-int in[MAXN];  // 存储每个结点的入度
 
-bool toposort() {
-  vector<int> L;
-  queue<int> S;
-  for (int i = 1; i <= n; i++)
-    if (in[i] == 0) S.push(i);
-  while (!S.empty()) {
-    int u = S.front();
-    S.pop();
-    L.push_back(u);
-    for (auto v : G[u]) {
-      if (--in[v] == 0) {
-        S.push(v);
-      }
-    }
-  }
-  if (L.size() == n) {
-    for (auto i : L) cout << i << ' ';
-    return true;
-  }
-  return false;
-}
 ```
 
 ## 杂项
 
 ### FAST_IO
 
-```cpp
-std::ios::sync_with_stdio(false);
-std::cin.tie(0);
-```
 
-### fastRead、fastWrite
-
-```cpp
-int read() {
-  int x = 0, w = 1;
-  char ch = 0;
-  while (ch < '0' || ch > '9') {  // ch 不是数字时
-    if (ch == '-') w = -1;        // 判断是否为负
-    ch = getchar();               // 继续读入
-  }
-  while (ch >= '0' && ch <= '9') {  // ch 是数字时
-    x = x * 10 + (ch - '0');  // 将新读入的数字「加」在 x 的后面
-    // x 是 int 类型，char 类型的 ch 和 '0' 会被自动转为其对应的
-    // ASCII 码，相当于将 ch 转化为对应数字
-    // 此处也可以使用 (x<<3)+(x<<1) 的写法来代替 x*10
-    ch = getchar();  // 继续读入
-  }
-  return x * w;  // 数字 * 正负号 = 实际数值
-}
-
-void write(int x) {
-  if (x < 0) {  // 判负 + 输出负号 + 变原数为正数
-    x = -x;
-    putchar('-');
-  }
-  if (x > 9) write(x / 10);  // 递归，将除最后一位外的其他部分放到递归中输出
-  putchar(x % 10 + '0');  // 已经输出（递归）完 x 末位前的所有数字，输出末位
-}
-```
 
 ### BigInt 1
 

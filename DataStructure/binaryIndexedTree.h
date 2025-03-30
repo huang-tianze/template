@@ -14,6 +14,9 @@ void build() {
 }
 
 // 维护：
+/**
+ * @param x TODO:
+ */
 int lowbit(int x) { return x & (-x); }
 
 void updata(int x, int k) {

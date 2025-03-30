@@ -1,4 +1,5 @@
 // NOLINTBEGIN
+// -- 定长数组的实现
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -41,7 +42,7 @@ struct trie {
     }
 };
 
-// -----
+// -----  节点+unordered_map的实现
 
 struct TrieNode {
     int cnt_ = 0;

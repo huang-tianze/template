@@ -2,9 +2,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// TODO
-int fa[0];
-int Rank[0];
+const int N = 1e5;
+int fa[N];
+int Rank[N];
 
 // 建立：
 void init(int n) {
@@ -23,16 +23,17 @@ int find(int x) {
 }
 
 // 合并：
-void merge(int i, int j) // 合并
-{
+void merge(int i, int j) {
     int x = find(i), y = find(j);
-    if (Rank[x] <= Rank[y]) {
+    if (x == y) return;
+
+    if (Rank[x] > Rank[y]) {
+        fa[y] = x;
+    } else if (Rank[x] < Rank[y]) {
         fa[x] = y;
     } else {
         fa[y] = x;
-    }
-    if (Rank[x] == Rank[y] && x != y) {
-        Rank[y]++;
+        Rank[x]++;
     }
 }
 
