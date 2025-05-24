@@ -96,4 +96,14 @@
     "valarray": "cpp",
     "variant": "cpp"
   }
+  // "files.exclude": {
+  //   "**/_minted-main": true
+  // },
+  // "search.exclude": {
+  //   "**/_minted-main": true
+  // },
+
+  // "files.watcherExclude": {
+  //   "**/_minted-main/**": true
+  // }
 }

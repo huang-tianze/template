@@ -146,5 +146,30 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \section{GBD Task}
 \inputminted{json}{Misc/GDB-Task.json}
 
+\section{对拍 (Double Checking)}
+随机数生成器\verb|gen.cpp|
+\inputminted{cpp}{Misc/DoubleChecking/gen.cpp}
+确定正确的暴力解法\verb|std.cpp|
+\inputminted{cpp}{Misc/DoubleChecking/gen.cpp}
+可能有误的目标解法
+\inputminted{cpp}{Misc/DoubleChecking/sol.cpp}
+对拍主控程序\verb|checker.cpp|。使用\verb|system()|对以上三者使用同样参数的编译命令:\newline\verb|g++ gen.cpp -o gen.exe -std=c++11 -O2|，使用Windows下的\verb|fc|命令对比。
+\inputminted{cpp}{Misc/DoubleChecking/checker.cpp}
+若为linux，可以参考以下表格做命令的替换。\newline
+\begin{tabular}{|l|l|l|}
+    \hline
+    替代项      & 原 Unix 命令            & Windows 等价命令     \\
+    \hline
+    输出文件内容   & \texttt{cat}         & \texttt{type}    \\
+    文件比较     & \texttt{diff}        & \texttt{fc}      \\
+    输出重定向无回显 & \texttt{> /dev/null} & \texttt{> nul}   \\
+    可执行文件名   & \texttt{./xxx}       & \texttt{xxx.exe} \\
+    \hline
+\end{tabular}
+\section{随机数据生成器}
+包含各种随机数据生成器，可以用于对拍
+\inputminted{cpp}{Misc/DoubleChecking/genlib.hpp}
+
+
 
 \end{document}
