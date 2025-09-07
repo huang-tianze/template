@@ -1,26 +1,41 @@
-#include <cstring>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
 const int MAXN = 1e5;
 
 struct edge {
     int v, w;
 };
 
-vector<edge> e[MAXN]; // 邻接表
-int dis[MAXN], vis[MAXN];
+struct node {
+    int dis;
+    int u;
 
-void dijkstra(int n, int s) {
+    bool operator>(const node &a) const { return dis > a.dis; }
+};
+
+vector<edge> e[MAXN]; // 邻接表
+int dis[MAXN];
+int vis[MAXN];
+priority_queue<node, vector<node>, greater<>> pq;
+
+void dijkstra(int s, int n) {
     memset(dis, 0x3f, (n + 1) * sizeof(int));
+    memset(vis, 0, (n + 1) * sizeof(int));
     dis[s] = 0;
-    for (int i = 1; i <= n; i++) {
-        int u = 0, mind = 0x3f3f3f3f;
-        for (int j = 1; j <= n; j++)
-            if (!vis[j] && dis[j] < mind) u = j, mind = dis[j];
-        vis[u] = true;
+    pq.push({0, s});
+    while (!pq.empty()) {
+        int u = pq.top().u;
+        pq.pop();
+        if (vis[u])
+            continue;
+        vis[u] = 1;
         for (auto ed : e[u]) {
             int v = ed.v, w = ed.w;
-            if (dis[v] > dis[u] + w) dis[v] = dis[u] + w;
+            if (dis[v] > dis[u] + w) {
+                dis[v] = dis[u] + w;
+                pq.push({dis[v], v});
+            }
         }
     }
 }
