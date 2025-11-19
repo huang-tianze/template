@@ -57,7 +57,7 @@
 \inputminted{cpp}{DataStructure/trie.h}
 
 \section{树状数组}
-\inputminted{cpp}{DataStructure/binaryIndexedTree.h}
+\inputminted{cpp}{DataStructure/binaryIndexedTree_2.h}
 
 \section{线段树}
 需要注意，下标从\verb|1|开始; 在外部使用时，\verb|\build(1,n,1)|建树、\verb|getsum(x,y,1,n,1)|查询、\verb|add(x,y,k,1,n,1)|修改。其中\verb|n|为数组长度，\verb|x, y|表示区间$[x,y]$, \verb|k|表示操作数。在外部当黑盒使用的话，参数\verb|1,n,1|是固定不变的，可以自行加一下缩略的重载。
@@ -136,6 +136,9 @@
 Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \inputminted{cpp}{GraphTheory/SPFA.h}
 
+\section{TSA 旅行商问题}
+\inputminted{cpp}{GraphTheory/Held-Karp_TSP.h}
+
 \chapter{杂项 (Misc)}
 
 \section{FAST\_IO}
@@ -153,6 +156,12 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \section{遍历全排列}
 需要注意的是，使用对\verb|vector<int>|或\verb|std::string|使用\verb|next_permutation()|，是从当前字典序一直遍历到字典序最大的排列。因此，如果要保证所有排列都被遍历到，需要确保最开始的数据需要是最小的字典序。反之，如果写成了字典序最大的，则在一次执行后变成\verb|while(0)|
 \inputminted{cpp}{Misc/next_permutation.h}
+
+\section{全排列的rank}
+\inputminted{cpp}{Misc/permutation.h}
+
+\section{组合数 nCk mod p}
+\inputminted{cpp}{Misc/lucas.h}
 
 \section{GBD Task}
 \inputminted{json}{Misc/GDB-Task.json}
