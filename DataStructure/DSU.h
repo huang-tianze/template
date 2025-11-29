@@ -7,7 +7,7 @@ struct DSU {
     vector<int> fa, sz;
     int component;
 
-    DSU(int n) : fa(n + 1), sz(n + 1, 1) {
+    DSU(int n, int type = 0) : fa(n + type), sz(n + type, 1) {
         iota(fa.begin(), fa.end(), 0); // fa[i] = i
         component = n;
     }
