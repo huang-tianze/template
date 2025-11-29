@@ -5,9 +5,7 @@ using namespace std;
 struct DSU {
     vector<int> fa, sz;
 
-    DSU(int n) {
-        fa.resize(n + 1);
-        sz.resize(n + 1, 1);
+    DSU(int n) : fa(n + 1), sz(n + 1, 1) {
         iota(fa.begin(), fa.end(), 0); // fa[i] = i
     }
 
