@@ -29,3 +29,4 @@ int main() {
     dsu.merge(1, 2); // 1,2在同一集合
     if (dsu.find(1) == dsu.find(2)) cout << "连通";
 }
+// NOLINTEND
