@@ -3,3 +3,5 @@ main.pdf
 _minted*
 *.exe
 Misc/DoubleChecking/*.txt
+.vscode/
+.idea/
