@@ -1,4 +1,5 @@
-// 要求b为质数，且当a不是p的倍数下，可以用qpow(a,p-2)来求乘法逆元
+// 要求b为质数；
+// 当a不是p的倍数下，可以用qpow(a,p-2,p)来求乘法逆元
 
 // p为模数，该函数给出a的b次方 mod p的结果
 long long qpow(long long a, long long b, long long p) {

@@ -3,9 +3,8 @@
 #include <vector>
 using namespace std;
 
-template <typename T>
-class ST {
-public:
+template <class T>
+struct ST {
     vector<vector<T>> st;
     int sz;
     function<T(T, T)> op;                                      // op can be max,min,gcd,lcm,&,|,etc.

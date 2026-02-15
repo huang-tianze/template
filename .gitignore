@@ -6,3 +6,5 @@ Misc/DoubleChecking/*.txt
 .vscode/
 .idea/
 Template/
+test.*
+local_

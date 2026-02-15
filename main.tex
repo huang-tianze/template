@@ -34,6 +34,8 @@
 \usepackage{amsmath,amsthm,amssymb,graphicx}
 \usepackage[bookmarks=true,colorlinks,citecolor=blue,linkcolor=black]{hyperref}
 
+\usepackage[strings]{underscore} % 使正文下划线不需要转义
+
 % #endregion
 \title{\Huge XCPC算法板子}
 \author{Sleeping Thinkers: Tokur233, huang\_tz, sword-a}
@@ -51,7 +53,7 @@
 \chapter{数据结构 (Data Structure)}
 
 \section{稀疏表(ST)}
-\inputminted{cpp}{DataStructure/ST.h}
+\inputminted{cpp}{DataStructure/ST.hpp}
 
 \section{trie树}
 \inputminted{cpp}{DataStructure/trie.h}
@@ -90,6 +92,9 @@
 
 \section{模p下求幂/乘法逆元}
 \inputminted{cpp}{NumberTheory/modPow.h}
+
+\section{线性时间求前N个数逆元}
+\inputminted{cpp}{NumberTheory/linearInv.hpp}
 
 \section{FFT}
 \inputminted{cpp}{NumberTheory/FFT.h}
@@ -143,6 +148,9 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 
 \section{FAST\_IO}
 \inputminted{cpp}{Misc/fast_io.h}
+
+\section{mmap_fast_io}
+\inputminted{cpp}{Misc/mmap_fast_io.hpp}
 
 \section{离散化}
 \inputminted{cpp}{Misc/Discretize.h}
