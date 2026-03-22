@@ -8,3 +8,4 @@ Misc/DoubleChecking/*.txt
 Template/
 test.*
 local_
+*.fls

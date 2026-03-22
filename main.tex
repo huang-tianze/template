@@ -14,14 +14,18 @@
 \usepackage{titlesec}
 \usepackage{tocloft}
 
+\raggedbottom
+
 % 代码高亮（minted 需要 Python 和 Pygments）
 \usepackage{minted}
-\setminted{breaklines,linenos}
+\setminted{breaklines,linenos,breakanywhere}
 \renewcommand{\theFancyVerbLine}{\textbf{\small\arabic{FancyVerbLine}}}
 \setminted{frame=lines}
 \setminted{tabsize=4}
 \setminted{encoding=utf8}
 \usemintedstyle{colorful}
+
+\usepackage[hybrid]{markdown}
 
 % 图表支持
 \usepackage{graphicx}
@@ -61,9 +65,20 @@
 \section{树状数组}
 \inputminted{cpp}{DataStructure/binaryIndexedTree_2.h}
 
+\section{BigInt-NNT}
+\inputminted{cpp}{DataStructure/BigInt-NNT.hpp}
+
 \section{线段树}
-需要注意，下标从\verb|1|开始; 在外部使用时，\verb|\build(1,n,1)|建树、\verb|getsum(x,y,1,n,1)|查询、\verb|add(x,y,k,1,n,1)|修改。其中\verb|n|为数组长度，\verb|x, y|表示区间$[x,y]$, \verb|k|表示操作数。在外部当黑盒使用的话，参数\verb|1,n,1|是固定不变的，可以自行加一下缩略的重载。
+需要注意，下标从\verb|1|开始; 在外部使用时，
+\begin{itemize}
+    \item \verb|build(1,n,1)|建树
+    \item \verb|getsum(x,y,1,n,1)|查询
+    \item \verb|add(x,y,k,1,n,1)|修改
+\end{itemize}
+其中\verb|n|为数组长度，\verb|x, y|表示区间$[x,y]$, \verb|k|表示操作数。在外部当黑盒使用的话，参数\verb|1,n,1|是固定不变的，可以自行加一下缩略的重载。
 \inputminted{cpp}{DataStructure/segmentTree.h}
+线段树v2，待处理
+\inputminted{cpp}{DataStructure/segmentTree_2.h}
 \section{并查集}
 \inputminted{cpp}{DataStructure/disjointSetUnion.h}
 并查集-2
@@ -76,6 +91,10 @@
 
 \section{KMP}
 \inputminted{cpp}{String/kmp.h}
+\section{SA}
+\inputminted{cpp}{String/SA.h}
+\section{SAM}
+\inputminted{cpp}{String/SAM.h}
 
 \chapter{算法 (Algorithm)}
 
@@ -83,18 +102,27 @@
 \inputminted{cpp}{Algorithm/STL.h}
 
 \section{背包DP}
-\inputminted{cpp}{Algorithm/dp.h}
+\inputminted{cpp}{Algorithm/bagDP.h}
 
-\section{计数排序}
-\inputminted{cpp}{Algorithm/counting_sort.h}
+% \section{计数排序}
+% \inputminted{cpp}{Algorithm/counting_sort.h}
 
-\chapter{数论 (Number Theory)}
+\section{珂朵莉树}
+\inputminted{cpp}{Algorithm/ChthollyTree.h}
+
+\section{三分法}
+\inputminted{cpp}{Algorithm/ternary.hpp}
+
+\chapter{数论 (Number Theory)} %---------------------
 
 \section{模p下求幂/乘法逆元}
-\inputminted{cpp}{NumberTheory/modPow.h}
+\inputminted{cpp}{NumberTheory/modPow.hpp}
 
 \section{线性时间求前N个数逆元}
 \inputminted{cpp}{NumberTheory/linearInv.hpp}
+
+\section{组合数}
+\inputminted{cpp}{NumberTheory/Binomial.h}
 
 \section{FFT}
 \inputminted{cpp}{NumberTheory/FFT.h}
@@ -112,9 +140,23 @@
 \section{中国剩余定理}
 \inputminted{cpp}{NumberTheory/CRT.h}
 
-\chapter{图论 (Graph Theory)}
+\section{素性测试(Miller-Rabin)}
+\inputminted{cpp}{NumberTheory/isPrime.cpp}
+
+\section{线性基}
+\inputminted{cpp}{Linear/basis.cpp}
+\section{矩阵快速幂}
+\inputminted{cpp}{Linear/qpow.cpp}
+另一版本
+\inputminted{cpp}{NumberTheory/matQpow.hpp}
+
+\chapter{图论 (Graph Theory)}%----------------------
+\section{子树数量}
+\inputminted{cpp}{GraphTheory/childtree.cpp}
+\section{树直径}
+\inputminted{cpp}{GraphTheory/tree_diameter.hpp}
 \section{最小生成树}
-\inputminted{cpp}{Algorithm/mst.h}
+\inputminted{cpp}{GraphTheory/mst.h}
 
 \section{最近公共祖先 (LCA)}
 这里有朴素算法和倍增算法两种，\verb|n|为节点数，\verb|root|为根节点值，使用邻接表。倍增的预处理使用\verb|preprocess(root,n)|.
@@ -199,7 +241,65 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \inputminted{cpp}{Misc/DoubleChecking/genlib.hpp}
 \section{高精度计时}
 \inputminted{cpp}{Misc/chrono.hpp}
+\section{trivival}
+\subsection*{Gray Code 格雷码 反射二进制码 循环二进制码}
+任意的相邻的两个格雷码只有一位不同。\\
+计算方式：\verb|gray_code = m ^ (m >> 1)|
 
+\noindent Tips:
+\begin{enumerate}
+    \item 如果将 $m$ 的格雷码 $g$ 再进行转换，则得到的一系列 $g$ 位于 $[2^p, 2^{p+1}-1]$ 内，即这是个循环。其中 $2^p \le m < 2^{p+1}$。
+    \item 对于长度为 $2^n$ 的格雷码序列，有 $\sum_{i=2}^{2^n} a_{i-1} \oplus a_i$ 最小。
+\end{enumerate}
 
+\subsection*{Xor 异或}
+\[
+    \bigoplus_{i = 1}^{n} i =
+    \begin{cases}
+        n   & n \pmod 4 = 0 \\
+        1   & n \pmod 4 = 1 \\
+        n+1 & n \pmod 4 = 2 \\
+        0   & n \pmod 4 = 3
+    \end{cases}
+\]
+
+\subsection*{0-1 Matrix}
+矩阵从 0 开始计数，即从偶数行（列）开始。\\
+要求：
+\begin{itemize}
+    \item 每一行数字的和构成 $\{0,1,2,3,\dots,n-1\}$ 的数字集合。
+    \item 每一列数字的和构成 $\{0,1,2,3,\dots,n-1\}$ 的数字集合。
+    \item 数字连通块恰好有 $n$ 个。
+\end{itemize}
+结果：
+\begin{enumerate}
+    \item $a_{i,j} = \min(i,j) \ \& \ 1$
+    \item 考虑偶数行从左向右排列 $n-i-1$ 个 1，奇数行全为 0；考虑奇数列从上到下为 $n-i$ 个 0，然后为 $i$ 个 1。将两个矩阵点或即可。
+\end{enumerate}
+
+\subsection*{gcd}
+$\forall n, \gcd(x,y)=n$，同时 \verb|x^y| 最小，则 $x,y$ 的一个可能的取值：\verb|(n << __bit_width(n))|, \verb|(n << __bit_width(n) | n)|。
+
+\subsection*{mex}
+对于集合 $A = \{x: x \in [L,R]\}$，记操作 op：从集合中任意选取至少一个元素，计算这些元素的 bit\_and，并将新元素加入集合。则最终 $mex(A)$ 由以下函数输出：
+\begin{minted}{cpp}
+int solve(int L, int R) {
+    int b1 = bit_width(L) ? bit_width(L) : -1;
+    int b2 = bit_width(R) ? bit_width(R) : -1;
+    if(b1 == -1) return R + 1;
+    else if(b1 == b2) return 0;
+    else if(b2 > (b1 + 1)) return R + 1;
+    else {
+        int ans = R - (1LL << b2) + 1;
+        int l = 0; // L 能自己构造的下限
+        for(int j = b1; j >= 0; j--) {
+            if((L >> j & 1) == 0) break;
+            else l |= (1LL << j);
+        }
+        if(l <= ans) ans = R + 1;
+        return ans;
+    }
+}
+\end{minted}
 
 \end{document}

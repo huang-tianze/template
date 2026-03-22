@@ -5,7 +5,8 @@ using namespace std;
 #define int long long
 
 #define MAX_LEN 10005
-// a为初始数组，下标从1开始，存储原始数据; d维护区间和; flag为lazyTag
+// a为初始数组，下标从1开始，存储原始数据;
+//  d维护区间和; flag为lazyTag
 int a[MAX_LEN], d[MAX_LEN * 4], flag[MAX_LEN * 4]; // *2 改成*4了
 
 void build(int l, int r, int p) {
