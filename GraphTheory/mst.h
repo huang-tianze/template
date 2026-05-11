@@ -1,56 +1,43 @@
-#include <algorithm>
 #include <bits/stdc++.h>
+#include <cstdint>
 #include <vector>
 using namespace std;
 
-/**
- * @brief kruskal O(nlogn)
- * @date 25-4-3
- * @details 有 n 个节点, 将其连为 k 组, 将 u, v连接起来的需要代价 l
- * @return 返回最小的代价
- */
-
-#define MAXN 1005
-int fa[MAXN];
-int n, m, k;
-
 struct Edge {
-    int u_, v_, w_;
+    int64_t u, v, w;
 
-    bool operator<(Edge b) const { return this->w_ < b.w_; }
+    bool operator<(Edge o) const { return w < o.w; }
 };
 
-int l;
-Edge g[MAXN];
-
-void add_edge(int u, int v, int w) {
-    l++;
-    g[l].u_ = u;
-    g[l].v_ = v;
-    g[l].w_ = w;
-}
-
-int find_root(int x) { return fa[x] == x ? x : fa[x] = find_root(fa[x]); }
-
-void merge(int x, int y) {
-    x = find_root(x);
-    y = find_root(y);
-    fa[x] = y;
-}
-
-int kruskal() {
-    int tot = 0; // 已经选了的边数
-    int ans = 0; // 存总的代价
-    for (int i = 1; i <= m; ++i) {
-        int xr = find_root(g[i].u_), yr = find_root(g[i].v_);
-        if (xr != yr) {
-            merge(xr, yr);
-            tot++;
-            ans += g[i].w_;
-        }
-        if (tot >= (n - k)) {
-            return ans;
-        }
+struct DSU {
+    vector<int> fa, sz;
+    int component;
+    DSU(int n, int base = 0) : fa(n + base), sz(n + base, 1) {
+        iota(fa.begin(), fa.end(), 0);
+        component = n;
     }
-    return -1;
+
+    int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
+    void merge(int a, int b) {
+        a = find(a), b = find(b);
+        if (a == b) return;
+        if (sz[a] < sz[b]) swap(a, b);
+        fa[b] = a;
+        sz[a] += sz[b];
+        component--;
+    }
+    int operator()(int x) { return find(x); }
+};
+// e边集，n:顶点数(1-based)；图不连通返回-1，否则返回最小生成树边权
+int64_t kruskal(vector<Edge> &e, int n) {
+    sort(e.begin(), e.end());
+    DSU dsu(n, 1);
+    int64_t ans = 0;
+    for (auto [u, v, w] : e) {
+        if (dsu(u) == dsu(v)) continue;
+        ans += w;
+        dsu.merge(u, v);
+    }
+
+    return dsu.component == 1 ? ans : -1;
 }

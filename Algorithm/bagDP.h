@@ -31,12 +31,20 @@ int dpMultiBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
 const int MAXN = 1e4 + 3;
 const int MAXW = 1e7 + 3;
 long long dp[MAXW];
-
+// 带 相同w使用最大v 优化的完全背包
 long long dpCompleteBags(int n, int capacity) {
-    vector<int> w(n, 0), v(n, 0);
-    for (int i = 0; i < n; i++) cin >> w[i] >> v[i];
+    map<int, int> best_v;
     for (int i = 0; i < n; i++) {
-        for (int j = w[i]; j <= capacity; j++) dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+        int cur_w, cur_v;
+        cin >> cur_w >> cur_v;
+        if (cur_w <= capacity) {
+            best_v[cur_w] = max(best_v[cur_w], cur_v);
+        }
+    }
+    for (auto const &[w, v] : best_v) {
+        for (int j = w; j <= capacity; j++) {
+            dp[j] = max(dp[j], dp[j - w] + v);
+        }
     }
     return dp[capacity];
 }

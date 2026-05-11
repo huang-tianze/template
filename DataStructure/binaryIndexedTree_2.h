@@ -6,7 +6,7 @@ class BIT {
     int n;
     std::vector<int> su;
 
-  public:
+public:
     BIT(int n) : n(n), su(n + 1) {}
 
     // Add v to the x-th number.
@@ -17,6 +17,7 @@ class BIT {
     }
 
     // Get the cumulative sum till the x-th number.
+    // 此处只提供[1...x]的查询，若可差分还可以相减得到[l...r]的查询；
     int query(int x) {
         int res = 0;
         for (; x; x &= x - 1) {
