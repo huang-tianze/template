@@ -1,3 +1,7 @@
+### 2026-5-15
+#### New:
+ - 加入了泛型树状数组以及不可差分运算的树状数组[DataStructure::BIT](DataStructure/BIT.hpp)、[DataStructure::BIT-nodiff](DataStructure/BIT-nodiff.hpp).
+
 ### 2026-3-9
 
 #### New:

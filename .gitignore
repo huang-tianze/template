@@ -9,3 +9,4 @@ Template/
 test.*
 local_
 *.fls
+main.luabridge.lua
