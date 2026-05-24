@@ -44,7 +44,7 @@ Tips:
 1. 对于集合$A = \{x: x \in [L,R]\}$
    记操作op: 从集合中任意选取至少一个元素, 计算这些元素的bit_and, 并将新元素加入集合
    则最终$mex(A)$由以下函数输出
-   ```
+   ```cpp
    int solve(int L, int R) {
        int b1 = bit_width(L) ? bit_width(L) : -1;
        int b2 = bit_width(R) ? bit_width(R) : -1;
@@ -72,3 +72,12 @@ Tips:
    }
 
    ```
+
+#### 树 连通子图 交集
+   给定一颗树$T$, 树上的路径$P = (u,v)$, 路径$P$的点集为$V_P$, 边集为$E_P$
+   记: $G$为树$T$的所有子图
+   则所有的与路径$P$有交集的连通子图$G'$的数量如下
+   $$
+   |G'| = \sum_{v \in V_P} \text{SubtreeNum}(v) - \sum_{e \in E_P} \text{SubtreeNum}(e)
+   $$
+   

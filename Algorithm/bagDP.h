@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <cassert>
 #include <vector>
 using namespace std;
 
@@ -15,7 +16,8 @@ pair<int, int> dp01bags(int bagSize, vector<int> &weight, vector<int> &value) {
 }
 
 // 多重背包
-int dpMultiBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) {
+int dpMultiBags(int n, int W, vector<int> &w, vector<int> &v,
+                vector<int> &cnt) {
     vector<int> dp(W + 1, 0);
     for (int i = 1; i <= n; i++) {
         for (int weight = W; weight >= w[i]; weight--) {
@@ -29,7 +31,6 @@ int dpMultiBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
 }
 
 // 二进制分组优化的多重背包
-
 int64_t dpMultiKnapsackBinary() {
     int n, capacity;
     cin >> n >> capacity;
@@ -57,6 +58,11 @@ int64_t dpMultiKnapsackBinary() {
     return dp[capacity];
 }
 
+// 完全背包及远程模板所需的全局变量
+const int MAXN = 1e4 + 3;
+const int MAXW = 1e7 + 3;
+long long dp[MAXW];
+
 // 带 相同w使用最大v 优化的完全背包
 long long dpCompleteBags(int n, int capacity) {
     vector<long long> dp(capacity + 1, 0);
@@ -77,7 +83,8 @@ long long dpCompleteBags(int n, int capacity) {
 }
 
 // 混合背包
-int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) {
+int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v,
+                vector<int> &cnt) {
     vector<int> dp(W + 1, 0);
     for (int i = 1; i <= n; i++) {
         if (cnt[i] == 0) { // 如果数量没有限制使用完全背包的核心代码
@@ -87,7 +94,8 @@ int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
         } else { // 物品有限使用多重背包的核心代码，它也可以处理0-1背包问题
             for (int weight = W; weight >= w[i]; weight--) {
                 for (int k = 1; k * w[i] <= weight && k <= cnt[i]; k++) {
-                    dp[weight] = max(dp[weight], dp[weight - k * w[i]] + k * v[i]);
+                    dp[weight] =
+                        max(dp[weight], dp[weight - k * w[i]] + k * v[i]);
                 }
             }
         }
@@ -95,6 +103,7 @@ int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
     return dp[W];
 }
 
+// ==================== [本地新增] 其他扩展背包 ====================
 // 分组背包
 #define MAX_GROUP_CNT 105
 int64_t dpGroupedKnapsack() {
@@ -121,7 +130,6 @@ int64_t dpGroupedKnapsack() {
 }
 
 // 超大背包
-
 int64_t solve() {
     int64_t n, capacity;
     cin >> n >> capacity; // n需要在40左右
@@ -173,4 +181,61 @@ int64_t solve() {
         }
     }
     return ans;
+}
+
+// 1-base
+long long Dp01Bag(int n, long long c, vector<long long> &w,
+                  vector<long long> &v) {
+    vector<long long> dp(c + 1, 0);
+    for (int i = 1; i <= n; i++) {
+        for (long long j = c; j >= w[i]; j--) {
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+        }
+    }
+    return dp[c];
+}
+
+long long DpMultiBag(int n, long long c, vector<long long> &w,
+                     vector<long long> &v, vector<long long> &k) {
+    vector<long long> nw(1); // 1-base
+    vector<long long> nv(1); // 1-base
+    for (int i = 1; i <= n; i++) {
+        long long c = 1;
+        while (k[i] > c) {
+            k[i] -= c;
+            nw.push_back(c * w[i]);
+            nv.push_back(c * v[i]);
+            c *= 2;
+        }
+        nw.push_back(k[i] * w[i]);
+        nv.push_back(k[i] * v[i]);
+    }
+    return Dp01Bag((int)nw.size() - 1, c, nw, nv);
+}
+
+long long DpCompleteBag(int n, long long c, vector<long long> &w,
+                        vector<long long> &v) {
+    vector<long long> dp(c + 1, 0);
+    for (int i = 1; i <= n; i++) {
+        for (long long j = w[i]; j <= c; j++) {
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i]);
+        }
+    }
+    return dp[c];
+}
+
+// group: 1-base, 1-base
+long long DpGroupBag(long long c, vector<long long> &w, vector<long long> &v,
+                     vector<vector<int>> &group) {
+    // 这里的 dp 使用了前面定义的全局数组 long long dp[MAXW];
+    for (int k = 1; k < group.size(); k++) {
+        for (long long i = c; i >= 0; i--) {
+            for (int j = 1; j < group[k].size(); j++) {
+                if (i >= w[group[k][j]]) {
+                    dp[i] = max(dp[i], dp[i - w[group[k][j]]] + v[group[k][j]]);
+                }
+            }
+        }
+    }
+    return dp[c];
 }
