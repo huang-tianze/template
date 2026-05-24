@@ -1,7 +1,8 @@
-// 背包dp, 仅供参考, 自己写
 #include <bits/stdc++.h>
 #include <vector>
 using namespace std;
+
+// IO形式不一，需要根据实际情况改；IO内容见注释
 
 // 01背包
 pair<int, int> dp01bags(int bagSize, vector<int> &weight, vector<int> &value) {
@@ -27,12 +28,38 @@ int dpMultiBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
     return dp[W];
 }
 
-// 完全背包
-const int MAXN = 1e4 + 3;
-const int MAXW = 1e7 + 3;
-long long dp[MAXW];
+// 二进制分组优化的多重背包
+
+int64_t dpMultiKnapsackBinary() {
+    int n, capacity;
+    cin >> n >> capacity;
+    int64_t w, v, k; // 重量、价值、次数
+    vector<int64_t> weight, value;
+    for (int i = 0; i < n; i++) {
+        cin >> w >> v >> k;
+        int64_t cur = 1;
+        while (k > cur) {
+            k -= cur;
+            weight.push_back(cur * w);
+            value.push_back(cur * v);
+            cur *= 2;
+        }
+        weight.push_back(k * w);
+        value.push_back(k * v);
+    }
+
+    vector<int64_t> dp(capacity + 1, 0);
+    for (int i = 0; i < weight.size(); i++) {
+        for (int j = capacity; j >= weight[i]; j--) {
+            dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
+        }
+    }
+    return dp[capacity];
+}
+
 // 带 相同w使用最大v 优化的完全背包
 long long dpCompleteBags(int n, int capacity) {
+    vector<long long> dp(capacity + 1, 0);
     map<int, int> best_v;
     for (int i = 0; i < n; i++) {
         int cur_w, cur_v;
@@ -66,4 +93,84 @@ int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v, vector<int> &cnt) 
         }
     }
     return dp[W];
+}
+
+// 分组背包
+#define MAX_GROUP_CNT 105
+int64_t dpGroupedKnapsack() {
+    int n, capacity;
+    cin >> n >> capacity;
+    vector<int64_t> w(n, 0), v(n, 0), k(n, 0); // 重量、价值、所属的组别
+    vector<vector<int>> groupIdx(MAX_GROUP_CNT);
+    for (int i = 0; i < n; i++) {
+        cin >> w[i] >> v[i] >> k[i];
+        groupIdx[k[i]].push_back(i);
+    }
+    vector<int64_t> dp(capacity + 1, 0);
+    for (auto &i : groupIdx) {
+        for (int j = capacity; j >= 0; j--) {
+
+            for (auto idx : i) {
+                if (j - w[idx] >= 0)
+                    dp[j] = max(dp[j], dp[j - w[idx]] + v[idx]);
+            }
+        }
+    }
+
+    return dp[capacity];
+}
+
+// 超大背包
+
+int64_t solve() {
+    int64_t n, capacity;
+    cin >> n >> capacity; // n需要在40左右
+    vector<int64_t> w(n, 0), v(n, 0);
+    for (int i = 0; i < n; i++) cin >> w[i] >> v[i];
+
+    if (n == 1) return w[0] <= capacity ? v[0] : 0;
+
+    auto power_set = [&w, &v](int L, int R) {
+        int k = R - L;
+        vector<pair<int64_t, int64_t>> res(1 << k);
+        res[0] = {0, 0};
+        for (int s = 1; s < (1 << k); ++s) {
+            int p = __builtin_ctz(s);
+            int prev = s & (s - 1);
+
+            res[s] = {res[prev].first + w[L + p], res[prev].second + v[L + p]};
+        }
+        return res;
+    };
+
+    auto filter = [capacity](vector<pair<int64_t, int64_t>> &list) {
+        assert(!list.empty());
+        sort(list.begin(), list.end());
+        int sz = 0;
+        for (int i = 0; i < list.size(); i++) {
+            auto [w, c] = list[i];
+            if (w > capacity) break;
+            if (sz == 0 || c > list[sz - 1].second) {
+                list[sz++] = list[i]; // overwrite unneeded item directly
+            }
+        }
+        list.resize(sz);
+    };
+
+    auto list1 = power_set(0, n / 2);
+    auto list2 = power_set(n / 2, n);
+
+    filter(list1);
+    filter(list2);
+
+    int64_t ans = 0;
+
+    auto it2 = list2.rbegin();
+    for (auto [w1, c1] : list1) {
+        while (it2 != list2.rend() && w1 + it2->first > capacity) it2++;
+        if (it2 != list2.rend()) {
+            ans = max(ans, c1 + it2->second);
+        }
+    }
+    return ans;
 }
