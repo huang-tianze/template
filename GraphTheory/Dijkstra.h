@@ -39,3 +39,44 @@ void dijkstra(int s, int n) {
         }
     }
 }
+
+// 写法二
+struct Edge {
+    int64_t u, v;
+};
+
+struct Node {
+    int64_t u, d;
+    bool operator<(const Node &o) const {
+        return d > o.d;
+    }
+};
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<Edge>> adj(n + 1, vector<Edge>());
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+    }
+    vector<int64_t> dis(n + 1, INT_MAX);
+
+    auto dijkstra = [&dis](int s, vector<vector<Edge>> &adj) -> void {
+        priority_queue<Node> pq;
+        dis[s] = 0;
+        pq.push({s, 0});
+        while (!pq.empty()) {
+            auto [u, d] = pq.top();
+            pq.pop();
+            if (d > dis[u]) continue; // 必要的剪枝，O(ElogV)，无则可能O(M 2^N)
+            for (auto [v, w] : adj[u]) {
+                if (d + w < dis[v]) {
+                    dis[v] = d + w;
+                    pq.push({v, dis[v]});
+                }
+            }
+        }
+    };
+}

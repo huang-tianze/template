@@ -23,7 +23,7 @@
 \setminted{frame=lines}
 \setminted{tabsize=4}
 \setminted{encoding=utf8}
-\usemintedstyle{colorful}
+\usemintedstyle{colorful}% 可能导致长备注换行失败
 
 \usepackage[hybrid]{markdown}
 
@@ -106,6 +106,8 @@
 \inputminted{cpp}{Algorithm/STL.h}
 
 \section{背包DP}
+除了背包DP，还有分数背包（物品可以拆分成实数份），按性价比贪心即可。如果是混合背包含有分数背包，那么要先跑完其他种类背包的DP，然后再遍历背包容量去取dp[j]+frac(w-j)的最大值。
+\par 除此之外，有结论：$capacity=\mathrm{lcm}(w_1,w_2,\cdots,w_n)$时，$n$物品直接按性价比贪心是正确的。因此物品数量较少，且固定时，可以考虑将背包容量划分为$k$个最小公倍数+余数，最小公倍数的部分跑贪心，余数部分跑DP。
 \inputminted{cpp}{Algorithm/bagDP.h}
 
 % \section{计数排序}

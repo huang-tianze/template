@@ -1,81 +1,43 @@
-#include <cstring>
-#include <iostream>
 #include <queue>
 #include <vector>
+
 using namespace std;
 
-const int INF = 1e9;
-const int MAX_NODES = 10005;
-
 struct Edge {
-    int to, weight;
+    int v;
+    int w;
 };
 
-vector<Edge> graph[MAX_NODES]; // 邻接表存储图
-int dis[MAX_NODES];            // 记录最短距离
-int visitCount[MAX_NODES];     // 记录节点被更新次数
-bool inQueue[MAX_NODES];       // 标记节点是否在队列中
-
-bool spfa(int startNode, int nodeCount) {
+bool spfa(int n, vector<vector<Edge>> &e) { //
     queue<int> q;
-    fill(dis, dis + nodeCount + 1, INF);
-    memset(visitCount, 0, sizeof(visitCount));
-    memset(inQueue, false, sizeof(inQueue));
+    vector<long long> dis(n + 1, 0x3f3f3f3f);
+    vector<bool> vis(n + 1, false);
+    vector<int> cnt(n + 1, 0);
 
-    // 初始化起点
-    dis[startNode] = 0;
-    q.push(startNode);
-    inQueue[startNode] = true;
-    visitCount[startNode] = 1;
+    // 所有节点为源找负环，存在负环即false
+    // for (int i = 1; i <= n; i++) {
+    //     q.push(i);
+    //     dis[i] = 0, vis[i] = 1;
+    // }
+
+    // 结点1可达负环即false
+    q.push(1);
+    dis[1] = 0;
+    vis[1] = true;
 
     while (!q.empty()) {
-        int currentNode = q.front();
-        q.pop();
-        inQueue[currentNode] = false;
-
-        for (auto edge : graph[currentNode]) {
-            int nextNode = edge.to;
-            int weight = edge.weight;
-
-            // 松弛操作
-            if (dis[nextNode] > dis[currentNode] + weight) {
-                dis[nextNode] = dis[currentNode] + weight;
-                visitCount[nextNode]++;
-
-                // 负环检测
-                if (visitCount[nextNode] > nodeCount) {
-                    return false; // 发现负环
-                }
-
-                if (!inQueue[nextNode]) {
-                    q.push(nextNode);
-                    inQueue[nextNode] = true;
-                }
+        int u = q.front();
+        q.pop(), vis[u] = 0;
+        for (auto [v, w] : e[u]) {
+            if (dis[v] > dis[u] + w) {
+                dis[v] = dis[u] + w;
+                cnt[v] = cnt[u] + 1;
+                if (cnt[v] >= n)
+                    return false;
+                if (!vis[v])
+                    q.push(v), vis[v] = 1;
             }
         }
     }
-    return true; // 没有负环
-}
-
-int main() {
-    int nodeCount, edgeCount, startNode;
-    cin >> nodeCount >> edgeCount >> startNode;
-
-    for (int i = 0; i < edgeCount; i++) {
-        int from, to, weight;
-        cin >> from >> to >> weight;
-        graph[from].push_back({to, weight});
-    }
-
-    if (spfa(startNode, nodeCount)) {
-        for (int i = 1; i <= nodeCount; i++) {
-            if (dis[i] == INF)
-                cout << "INF ";
-            else
-                cout << dis[i] << " ";
-        }
-    } else {
-        cout << "Graph contains a negative weight cycle";
-    }
-    return 0;
+    return true;
 }

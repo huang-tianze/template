@@ -104,7 +104,7 @@ int dpMixedBags(int n, int W, vector<int> &w, vector<int> &v,
 }
 
 // ==================== [本地新增] 其他扩展背包 ====================
-// 分组背包
+// 分组背包，相当于每个组内再跑一个01背包，或者更准确地说，到一个组可以选择组内任一物品，或不选，基于这种选择写dp
 #define MAX_GROUP_CNT 105
 int64_t dpGroupedKnapsack() {
     int n, capacity;
