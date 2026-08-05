@@ -346,4 +346,12 @@ int solve(int L, int R) {
 }
 \end{minted}
 
+\subsection*{树 连通子图 交集}
+给定一颗树$T$, 树上的路径$P = (u,v)$, 路径$P$的点集为$V_P$, 边集为$E_P$
+记: $G$为树$T$的所有子图
+则所有的与路径$P$有交集的连通子图$G'$的数量如下
+$$
+    |G'| = \sum_{v \in V_P} \text{SubtreeNum}(v) - \sum_{e \in E_P} \text{SubtreeNum}(e)
+$$
+
 \end{document}
