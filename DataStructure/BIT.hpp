@@ -4,9 +4,11 @@
 #include <vector>
 
 using namespace std;
-template <typename T, typename MergeOp = plus<T>, typename GetInverseOp = negate<T>>
+
+template <typename T, typename MergeOp = plus<T>,
+          typename GetInverseOp = negate<T>>
 class BIT {
-private:
+  private:
     int n;
     T identity;
     MergeOp merge;
@@ -17,19 +19,22 @@ private:
         return x & (-x);
     }
 
-public:
-    explicit BIT(int size,
-                 T id = T(),
-                 MergeOp merge_op = MergeOp(),
+  public:
+    explicit BIT(int size, T id = T(), MergeOp merge_op = MergeOp(),
                  GetInverseOp inv_op = GetInverseOp())
-        : n(size), bit(size + 1, id), identity(id), merge(merge_op), inv(inv_op) {}
+        : n(size), bit(size + 1, id), identity(id), merge(merge_op),
+          inv(inv_op) {}
 
-    explicit BIT(const vector<T> &a, T id = T(), MergeOp op = MergeOp(), GetInverseOp inv_op = GetInverseOp())
-        : n(a.size() - 1), identity(id), merge(op), inv(inv_op), bit(n + 1, identity) {
+    explicit BIT(const vector<T> &a, T id = T(), MergeOp op = MergeOp(),
+                 GetInverseOp inv_op = GetInverseOp())
+        : n(a.size() - 1), identity(id), merge(op), inv(inv_op),
+          bit(n + 1, identity) {
         for (int i = 1; i <= n; i++) {
             bit[i] = merge(bit[i], a[i]);
             int j = i + lowbit(i);
-            if (j <= n) bit[j] = merge(bit[j], bit[i]); // bit[j]是左侧聚合的结果，因此在左
+            if (j <= n)
+                bit[j] =
+                    merge(bit[j], bit[i]); // bit[j]是左侧聚合的结果，因此在左
         }
     }
 
@@ -50,14 +55,17 @@ public:
     }
 
     T query(int L, int R) const {
-        if (L > R) return identity;
+        if (L > R)
+            return identity;
 
         return merge(query(R), inv(query(L - 1)));
     }
+
     void push_back(T val) {
         n++;
         bit.push_back(val);
-        for (int j = 1; j < lowbit(n); j *= 2) { // u - 2^t, 另一种遍历子节点是u-=1, 遍历u-=lowbit(u)
+        for (int j = 1; j < lowbit(n);
+             j *= 2) { // u - 2^t, 另一种遍历子节点是u-=1, 遍历u-=lowbit(u)
             bit[n] = merge(bit[n - j], bit[n]);
         }
     }
@@ -78,7 +86,8 @@ public:
         int x = 0;
 
         int step = 1;
-        while (step <= n) step <<= 1;
+        while (step <= n)
+            step <<= 1;
         step >>= 1; // 最大的2^k使得2^k<=n
 
         for (; step > 0; step >>= 1) {
@@ -104,7 +113,8 @@ int discretize(vector<int64_t> &a) {
 
     // 1-based 排名
     for (int i = 1; i <= n; ++i) {
-        a[i] = lower_bound(sorted_a.begin(), sorted_a.end(), a[i]) - sorted_a.begin() + 1;
+        a[i] = lower_bound(sorted_a.begin(), sorted_a.end(), a[i]) -
+               sorted_a.begin() + 1;
     }
 
     return max_rank;
@@ -113,7 +123,8 @@ int discretize(vector<int64_t> &a) {
 // 求逆序数（二维偏序计数都可以用类似的思路解决）
 int64_t count_inversions(vector<int64_t> a) {
     int n = a.size() - 1;
-    if (n <= 1) return 0;
+    if (n <= 1)
+        return 0;
     int m = discretize(a);
 
     BIT<int64_t> bit(m, 0LL);
