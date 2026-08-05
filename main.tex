@@ -83,6 +83,8 @@
 \inputminted{cpp}{DataStructure/segmentTree.h}
 线段树v2，待处理
 \inputminted{cpp}{DataStructure/segmentTree_2.h}
+线段树 (模板类版本)
+\inputminted{cpp}{DataStructure/SegmentTree.hpp}
 \section{并查集}
 \inputminted{cpp}{DataStructure/disjointSetUnion.h}
 并查集-2
@@ -95,6 +97,10 @@
 
 \section{KMP}
 \inputminted{cpp}{String/kmp.h}
+
+\section{exKMP (Z函数)}
+\inputminted{cpp}{String/exkmp.hpp}
+
 \section{SA}
 \inputminted{cpp}{String/SA.h}
 \section{SAM}
@@ -129,6 +135,8 @@
 
 \section{组合数}
 \inputminted{cpp}{NumberTheory/Binomial.h}
+另一版本 (含阶乘逆元预处理)
+\inputminted{cpp}{NumberTheory/Combinations.h}
 
 \section{FFT}
 \inputminted{cpp}{NumberTheory/FFT.h}
@@ -139,6 +147,9 @@
 
 \section{线性筛}
 \inputminted{cpp}{NumberTheory/linearSieve.h}
+
+\section{编译期最小质因子表 (SPF)}
+\inputminted{cpp}{NumberTheory/SPF.hpp}
 
 \section{exGCD}
 \inputminted{cpp}{NumberTheory/exgcd.h}
@@ -157,6 +168,8 @@
 \inputminted{cpp}{NumberTheory/matQpow.hpp}
 
 \chapter{图论 (Graph Theory)}%----------------------
+\section{BFS/DFS 模板}
+\inputminted{cpp}{GraphTheory/bfs_dfs_template.hpp}
 \section{子树数量}
 \inputminted{cpp}{GraphTheory/childtree.cpp}
 \section{树直径}
@@ -173,6 +186,8 @@
 杂项
 \inputminted{cpp}{GraphTheory/tree-misc.hpp}
 
+\section{强连通分量 (SCC/Tarjan)}
+\inputminted{cpp}{GraphTheory/scc.hpp}
 
 \section{Dijkstra}
 用于求解有向\textbf{无负边权}图的单源最短路。即起点\verb|s|到所有点的最短路。其中\verb|vis[i]|表示是否遍历到节点\verb|i|，也即是否存在\verb|s|到\verb|i|的路径; \verb|dis[i]|为求解出的最短距离。坏的情况，时间复杂度为$O(n^2)$
@@ -187,6 +202,10 @@
 用于处理节点有前置要求的任务，也可以用来判是否有环。也即，有向无环图(DAG)才有拓扑排序。
 \inputminted{cpp}{GraphTheory/TopoSort.h}
 
+\section{拓扑序数量}
+求DAG的拓扑序总数，$O(V\cdot2^V)$
+\inputminted{cpp}{GraphTheory/topoCount.hpp}
+
 \section{SPFA}
 Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \inputminted{cpp}{GraphTheory/SPFA.h}
@@ -196,6 +215,13 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \section{传递闭包}
 使用bitset优化的传递闭包，能通过约$n=2000$的数据（需要手动改一下\verb|N|）
 \inputminted{cpp}{GraphTheory/TransitiveClosure.hpp}
+
+\section{二维并查集}
+用于二维平面上的并查集，处理由点和8方向边围成的区域。
+\inputminted{cpp}{GraphTheory/Dsu2d.cpp}
+\chapter{计算几何 (Computational Geometry)}%----------------------
+\section{三维几何基础}
+\inputminted{cpp}{ComputationalGeometry/3D.h}
 \chapter{杂项 (Misc)}
 
 \section{FAST\_IO}
@@ -217,6 +243,9 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 需要注意的是，使用对\verb|vector<int>|或\verb|std::string|使用\verb|next_permutation()|，是从当前字典序一直遍历到字典序最大的排列。因此，如果要保证所有排列都被遍历到，需要确保最开始的数据需要是最小的字典序。反之，如果写成了字典序最大的，则在一次执行后变成\verb|while(0)|
 \inputminted{cpp}{Misc/next_permutation.h}
 
+\section{遍历子集 (Submask Enumeration)}
+\inputminted{cpp}{Misc/next_submask.hpp}
+
 \section{全排列的rank}
 \inputminted{cpp}{Misc/permutation.h}
 
@@ -229,8 +258,10 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \section{对拍 (Double Checking)}
 随机数生成器\verb|gen.cpp|
 \inputminted{cpp}{Misc/DoubleChecking/gen.cpp}
+数据生成器使用示例\verb|example_gen.cpp|
+\inputminted{cpp}{Misc/DoubleChecking/example_gen.cpp}
 确定正确的暴力解法\verb|std.cpp|
-\inputminted{cpp}{Misc/DoubleChecking/gen.cpp}
+\inputminted{cpp}{Misc/DoubleChecking/std.cpp}
 可能有误的目标解法
 \inputminted{cpp}{Misc/DoubleChecking/sol.cpp}
 对拍主控程序\verb|checker.cpp|。使用\verb|system()|对以上三者使用同样参数的编译命令:\newline\verb|g++ gen.cpp -o gen.exe -std=c++11 -O2|，使用Windows下的\verb|fc|命令对比。
@@ -251,6 +282,9 @@ Bellman-Ford的优化版，也用于求解单源最短路，支持负边权。
 \inputminted{cpp}{Misc/DoubleChecking/genlib.hpp}
 \section{高精度计时}
 \inputminted{cpp}{Misc/chrono.hpp}
+\section{容斥原理 (Inclusion-Exclusion)}
+$O((T_{calc}+N)\cdot2^N)$，calc给出集合交的大小，solve给出N个集合并的大小。
+\inputminted{cpp}{Misc/in-ex-clusion.hpp}
 \section{trivival}
 \subsection*{Gray Code 格雷码 反射二进制码 循环二进制码}
 任意的相邻的两个格雷码只有一位不同。\\
